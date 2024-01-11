@@ -1,24 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import '@bryntum/gantt/gantt.stockholm.css';
+import { BryntumGantt } from '@bryntum/gantt-react';
 
 function App() {
+  const config = {
+    columns: [
+      {
+        type: 'name',
+        field: 'name',
+        renderer: (args) => {
+          console.log('yo');
+          return <div>{args.value}</div>;
+        },
+        sortable: false
+      }
+    ]
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <BryntumGantt {...config} project={{ tasks: [{ id: '1', name: 'Hello', startDate: new Date(), endDate: new Date()}] }} projectLinesFeature={false} />
+      </div>
   );
 }
 
