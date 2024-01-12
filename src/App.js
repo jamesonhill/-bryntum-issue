@@ -11,9 +11,9 @@ function App() {
         field: 'name',
         autoHeight: true,
         width: 100,
-        renderer: (args) => {
-          return <div>{args.value}</div>;
-        },
+        // renderer: (args) => {
+        //   return <div>{args.value}</div>;
+        // },
         sortable: false
       }
     ]
