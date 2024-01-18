@@ -21,7 +21,7 @@ function App() {
 
   return (
       <div>
-        <BryntumGantt {...config} project={{ tasks: [{ id: '1', name: 'Hello here is a really long name that I want to wrap text with less width', startDate: new Date(), endDate: new Date()}] }} projectLinesFeature={false} />
+        <BryntumGantt {...config} project={{ tasks: [{ id: '1', name: 'Hello here is a really long name that I want to wrap text with less width'.repeat(10), startDate: new Date(), endDate: new Date()}] }} projectLinesFeature={false} />
       </div>
   );
 }

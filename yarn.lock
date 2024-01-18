@@ -1168,10 +1168,10 @@
   resolved "https://npm-us.bryntum.com/@bryntum%2fgantt-trial-lib/-/gantt-trial-lib-1.0.0.tgz#8bcc346b93e85e31bef3cf326230d3ae74118f90"
   integrity sha512-JeL/zOTQ3ix0Rbaf1hC9aVGWx8uPxSUy1QfB+Tvk2iWH8ujnvXxAz3FwKaC/fmbluYAn2TUhLZNBxSSLoztvqQ==
 
-"@bryntum/gantt@npm:@bryntum/gantt-trial@^5.6.2":
-  version "5.6.5"
-  resolved "https://npm-us.bryntum.com/@bryntum%2fgantt-trial/-/gantt-trial-5.6.5.tgz#d3b087bdd71c3cdfaece3ab2691f9a6de818fcce"
-  integrity sha512-RDjytZW0nn/nCqTWmpKlGjGmyTX9TSYS3oUtscfz/sA1HeNQ2RSp9TwLoBvRfqBZ+jXsfoDNWn+KRzlE7R7pVA==
+"@bryntum/gantt@npm:@bryntum/gantt-trial@5.6.2":
+  version "5.6.2"
+  resolved "https://npm-us.bryntum.com/@bryntum%2fgantt-trial/-/gantt-trial-5.6.2.tgz#5c7069444a4ad39e4ac5b7e8c1afe862efa7afa5"
+  integrity sha512-kN4YJVqsSz75eCUuw6hEUsF0nvIpnjX6fpSxElCNEfvquL5waw65+4+PcpEJs6kKDTuQamktYEtzJY6Fc8h6aw==
   optionalDependencies:
     "@bryntum/gantt-trial-lib" "1.0.0"
 
