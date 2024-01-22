@@ -1158,20 +1158,17 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bryntum/gantt-react@5.6.2":
+"@bryntum/gantt-react@file:./src/lib/bryntum/bryntum-gantt-react-5.6.2.tgz":
   version "5.6.2"
-  resolved "https://npm-us.bryntum.com/@bryntum%2fgantt-react/-/gantt-react-5.6.2.tgz#73e24a7fee5fe0ba0f6645cc25b7f99ab26c38d4"
-  integrity sha512-L8rhrkc5o81bwCRBN1ZXmy5+cLxRzaWVp0aTZjHwxgK3dIGCMax0jQ2/iT9PPK0k0SZeidBPo/xSMP7BRwDKqA==
+  resolved "file:./src/lib/bryntum/bryntum-gantt-react-5.6.2.tgz#d6ea1641c6af76b8780af0712eb9e8b3eb5f3dc6"
 
-"@bryntum/gantt-trial-lib@1.0.0":
+"@bryntum/gantt-trial-lib@1.0.0", "@bryntum/gantt-trial-lib@file:./src/lib/bryntum/bryntum-gantt-trial-lib-1.0.0.tgz":
   version "1.0.0"
-  resolved "https://npm-us.bryntum.com/@bryntum%2fgantt-trial-lib/-/gantt-trial-lib-1.0.0.tgz#8bcc346b93e85e31bef3cf326230d3ae74118f90"
-  integrity sha512-JeL/zOTQ3ix0Rbaf1hC9aVGWx8uPxSUy1QfB+Tvk2iWH8ujnvXxAz3FwKaC/fmbluYAn2TUhLZNBxSSLoztvqQ==
+  resolved "file:./src/lib/bryntum/bryntum-gantt-trial-lib-1.0.0.tgz#b374db4f0ab96a422768f77653d1c5a84213a238"
 
-"@bryntum/gantt@npm:@bryntum/gantt-trial@5.6.2":
+"@bryntum/gantt@file:./src/lib/bryntum/bryntum-gantt-trial-5.6.2.tgz":
   version "5.6.2"
-  resolved "https://npm-us.bryntum.com/@bryntum%2fgantt-trial/-/gantt-trial-5.6.2.tgz#5c7069444a4ad39e4ac5b7e8c1afe862efa7afa5"
-  integrity sha512-kN4YJVqsSz75eCUuw6hEUsF0nvIpnjX6fpSxElCNEfvquL5waw65+4+PcpEJs6kKDTuQamktYEtzJY6Fc8h6aw==
+  resolved "file:./src/lib/bryntum/bryntum-gantt-trial-5.6.2.tgz#39554198d0899086baee4b6f6bb385426f6a51ad"
   optionalDependencies:
     "@bryntum/gantt-trial-lib" "1.0.0"
 

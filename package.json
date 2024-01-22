@@ -10,6 +10,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
+    "@bryntum/gantt-trial-lib": "file:./src/lib/bryntum/bryntum-gantt-trial-lib-1.0.0.tgz",
     "@bryntum/gantt": "file:./src/lib/bryntum/bryntum-gantt-trial-5.6.2.tgz",
     "@bryntum/gantt-react": "file:./src/lib/bryntum/bryntum-gantt-react-5.6.2.tgz"
   },
