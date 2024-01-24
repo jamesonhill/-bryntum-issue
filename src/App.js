@@ -3,25 +3,21 @@ import { useState, useRef, useEffect } from 'react';
 import '@bryntum/gantt/gantt.stockholm.css';
 import { BryntumGantt } from '@bryntum/gantt-react';
 
-function BryntumComponent({ columns: propColumns }) {
+function BryntumComponent() {
   const ganttRef = useRef(null);
 
-  useEffect(() => {
-    if (propColumns) {
-      if (!ganttRef.current) {
-        console.log('no gantt ref');
-        return;
-      } 
-        console.log('calling the store', propColumns);
-        const columnStore = ganttRef.current.instance.columns;
-        columnStore.removeAll();
-
-        for (const column of propColumns) {
-          columnStore.add(column);
-        }
+  const [columns] = useState([
+    {
+      type: 'name',
+      field: 'name',
+      autoHeight: true,
+      width: 100,
+      // renderer: (args) => {
+      //   return <div>{args.value}</div>;
+      // },
+      sortable: false
     }
-  }, [propColumns]);
-  console.log('columns', propColumns);
+  ]);
 
   return (
       <div>
@@ -31,10 +27,11 @@ function BryntumComponent({ columns: propColumns }) {
           console.log('getRowHeight', args);
           return 100;
         }} 
-          columns={propColumns}
+          columns={columns}
           project={{ tasks: [{ id: '1', name: 'Hello here is a really long name that I want to wrap text with less width'.repeat(10), startDate: new Date(), endDate: new Date()}] }} 
           projectLinesFeature={false} 
         />
+        <button onClick={() => console.log('instance', ganttRef.current.instance)}>Print instance</button>
       </div>
   );
 }
@@ -57,10 +54,6 @@ function App() {
   return (
     <div>
       <BryntumComponent columns={columns} />
-      <button onClick={() => {
-        console.log('calling setColumns')
-        setColumns(prev => [...prev, { type: 'name', field: 'name'}]);
-      }}>Add new column</button>
     </div>
   );
 }
