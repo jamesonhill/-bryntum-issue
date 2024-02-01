@@ -1,23 +1,39 @@
 import './App.css';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import '@bryntum/gantt/gantt.stockholm.css';
 import { BryntumGantt } from '@bryntum/gantt-react';
 
-function BryntumComponent() {
+function BryntumComponent({ data }) {
   const ganttRef = useRef(null);
 
   const [columns] = useState([
     {
       type: 'name',
       field: 'name',
+      id: 'name',
       autoHeight: true,
       width: 100,
-      // renderer: (args) => {
-      //   return <div>{args.value}</div>;
-      // },
-      sortable: false
+      renderer: (args) => {
+        return <div>{args.value}</div>;
+      },
+      sortable: false,
+      leafIconCls: null
+    },
+    {
+      field: 'custom',
+      text: 'Custom column',
+      width: 200,
+      renderer: (args) => {
+        return <div style={{ color: 'green'}}>{args.value}</div>;
+      } 
     }
   ]);
+
+  const tasks = useMemo(() => {
+    return data;
+  }, [data]);
+
+  console.log({ data, tasks })
 
   return (
       <div>
@@ -28,32 +44,30 @@ function BryntumComponent() {
           return 100;
         }} 
           columns={columns}
-          project={{ tasks: [{ id: '1', name: 'Hello here is a really long name that I want to wrap text with less width'.repeat(10), startDate: new Date(), endDate: new Date()}] }} 
+          project={{ tasks }} 
           projectLinesFeature={false} 
         />
-        <button onClick={() => console.log('instance', ganttRef.current.instance)}>Print instance</button>
       </div>
   );
 }
 
 function App() {
-  const [columns, setColumns] = useState([
-    {
-      type: 'name',
-      field: 'name',
-      autoHeight: true,
-      width: 100,
-      // renderer: (args) => {
-      //   return <div>{args.value}</div>;
-      // },
-      sortable: false
-    }
-  ]);
+  const [data, setData] = useState([{ id: 1, name: 'task 1', custom: 'my custom thing'}]);
 
-  console.log('rendering App');
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('in timer func');
+      setData((prev) => [{ id: 1, name: prev[0].name + '1', custom: prev[0].custom + '1' }]);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, []);
+
   return (
     <div>
-      <BryntumComponent columns={columns} />
+      <BryntumComponent data={data} />
     </div>
   );
 }
