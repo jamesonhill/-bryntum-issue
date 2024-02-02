@@ -29,6 +29,13 @@ function BryntumComponent({ data }) {
     }
   ]);
 
+  // this doesn't work; 
+  useEffect(() => {
+    if (ganttRef.current) {
+      ganttRef.current.instance.setTimeSpan(new Date(2021,2, 15), new Date(2021,11, 30));
+    }
+  }, [])
+
   const tasks = useMemo(() => {
     return data;
   }, [data]);
@@ -63,10 +70,12 @@ function BryntumComponent({ data }) {
               }
             ]
           }}
+          autoAdjustTimeAxis={false}
         />
         <button onClick={() => {
           if (ganttRef.current) {
-            ganttRef.current.instance.setTimeSpan(new Date(2021, 5, 15), new Date(2021,9, 30));
+            ganttRef.current.instance.timeAxis.setTimeSpan(new Date(2021,2, 15), new Date(2021,11, 30));
+            // ganttRef.current.instance.setEndDate()
           }
         }}>Set Timespan to minDate</button>
       </div>
