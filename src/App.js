@@ -3,8 +3,23 @@ import { useState, useRef, useMemo, useEffect } from 'react';
 import '@bryntum/gantt/gantt.stockholm.css';
 import { BryntumGantt } from '@bryntum/gantt-react';
 
-function BryntumComponent({ data }) {
+function BryntumComponent({ data: propData }) {
   const ganttRef = useRef(null);
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const waitForDataLoad = async () => {
+      await new Promise(resolve => {
+        setTimeout(() => {
+          setData(propData);
+          resolve();
+        }, 0)
+      })
+    }
+
+    waitForDataLoad();
+  }, [propData]);
 
   const [config] = useState({
     viewPreset: {
@@ -24,7 +39,8 @@ function BryntumComponent({ data }) {
         }
       ]
     },
-    autoAdjustTimeAxis: false
+    // autoAdjustTimeAxis: false,
+    projectLinesFeature: { showCurrentTimeLine: true },
   })
 
   const [columns] = useState([
@@ -45,6 +61,9 @@ function BryntumComponent({ data }) {
       text: 'Custom column',
       width: 200,
       renderer: (args) => {
+        if (!args.value) {
+          return null;
+        }
         return <div style={{ color: 'green'}}>{args.value}</div>;
       } 
     }
@@ -59,9 +78,9 @@ function BryntumComponent({ data }) {
     }
   }, [ganttRef.current?.instance])
 
-  const tasks = useMemo(() => {
-    return data;
-  }, [data]);
+  // const tasks = useMemo(() => {
+  //   return data;
+  // }, [data]);
 
   console.log(ganttRef.current?.instance.timeAxis)
 
@@ -74,26 +93,38 @@ function BryntumComponent({ data }) {
           return 100;
         }} 
           columns={columns}
-          project={{ tasks }} 
-          projectLinesFeature={false}
+          project={{ tasks: data }} 
+          // projectLinesFeature={false}
           {...config}
+          listeners={{
+            renderRow: (args) => console.log('renderRow', args.recordIndex),
+            renderRows: () => console.log('renderRows'),
+            rowMouseEnter: () => console.log('mouse enter')
+          }}
         />
-        <button onClick={() => {
-          if (ganttRef.current) {
-            ganttRef.current.instance.timeAxis.setTimeSpan(new Date(2021,2, 25), new Date(2021,11, 3));
-            // ganttRef.current.instance.setEndDate()
-          }
-        }}>Set Timespan to minDate</button>
       </div>
   );
 }
 
 function App() {
-  const [data] = useState([{ id: 1, name: 'task 1', custom: 'my custom thing', startDate: new Date(2021, 5, 15), endDate: new Date(2021,8, 30)}]);
+  const [data, setData] = useState([{ id: 1, name: 'task 1', custom: null, startDate: new Date(2024, 0, 1), endDate: new Date(2024,11, 30)}]);
 
   return (
     <div>
       <BryntumComponent data={data} />
+      <button onClick={() => {
+          setData(prev => {
+            const newData = [...prev];
+
+            if (newData[0].custom === null) {
+              newData[0].custom = 'my custom thing';
+            } else {
+              newData[0].custom = null;
+            }
+
+            return newData;
+          });
+        }}>Toggle custom field value to {data[0].custom === null ? 'not null' : 'null'}</button>
     </div>
   );
 }
