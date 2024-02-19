@@ -40,7 +40,7 @@ function BryntumComponent({ data: propData }) {
       ]
     },
     // autoAdjustTimeAxis: false,
-    projectLinesFeature: { showCurrentTimeLine: true },
+    projectLinesFeature: { showCurrentTimeline: true },
   })
 
   const [columns] = useState([
@@ -61,10 +61,11 @@ function BryntumComponent({ data: propData }) {
       text: 'Custom column',
       width: 200,
       renderer: (args) => {
-        if (!args.value) {
-          return null;
-        }
-        return <div style={{ color: 'green'}}>{args.value}</div>;
+        // onclick or onClick? neither work
+        const html = `<div onclick="function handleClick() {
+          console.log('clicked');
+        }">${args.value}</div>`;
+        return { html };
       } 
     }
   ]);
@@ -72,7 +73,7 @@ function BryntumComponent({ data: propData }) {
   // this doesn't work; 
   useEffect(() => {
     if (ganttRef.current) {
-      console.log('setting timespan first', ganttRef.current.instance)
+      // console.log('setting timespan first', ganttRef.current.instance)
       ganttRef.current.instance.setTimeSpan(new Date(2021,2, 25), new Date(2021,11, 3));
 
     }
@@ -82,7 +83,7 @@ function BryntumComponent({ data: propData }) {
   //   return data;
   // }, [data]);
 
-  console.log(ganttRef.current?.instance.timeAxis)
+  // console.log(ganttRef.current?.instance.timeAxis)
 
   return (
       <div>
@@ -96,18 +97,13 @@ function BryntumComponent({ data: propData }) {
           project={{ tasks: data }} 
           // projectLinesFeature={false}
           {...config}
-          listeners={{
-            renderRow: (args) => console.log('renderRow', args.recordIndex),
-            renderRows: () => console.log('renderRows'),
-            rowMouseEnter: () => console.log('mouse enter')
-          }}
         />
       </div>
   );
 }
 
 function App() {
-  const [data, setData] = useState([{ id: 1, name: 'task 1', custom: null, startDate: new Date(2024, 0, 1), endDate: new Date(2024,11, 30)}]);
+  const [data, setData] = useState([{ id: 1, name: 'task 1', custom: 'click me', startDate: new Date(2024, 0, 1), endDate: new Date(2024,11, 30)}]);
 
   return (
     <div>
