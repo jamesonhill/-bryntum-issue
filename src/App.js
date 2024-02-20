@@ -3,23 +3,25 @@ import { useState, useRef, useMemo, useEffect } from 'react';
 import '@bryntum/gantt/gantt.stockholm.css';
 import { BryntumGantt } from '@bryntum/gantt-react';
 
-function BryntumComponent({ data: propData }) {
+const DateDisplay = ({ date }) => {
+  return <span>{date.toDateString()}</span>
+}
+
+function BryntumComponent({ data }) {
   const ganttRef = useRef(null);
 
-  const [data, setData] = useState([]);
+  const tasksRef = useRef();
 
-  useEffect(() => {
-    const waitForDataLoad = async () => {
-      await new Promise(resolve => {
-        setTimeout(() => {
-          setData(propData);
-          resolve();
-        }, 0)
-      })
-    }
-
-    waitForDataLoad();
-  }, [propData]);
+  const tasks = useMemo(() => {
+    return data.map((task) => {
+      return {
+        ...task,
+        startDate: task.start,
+        endDate: task.due,
+        manuallyScheduled: true
+      };
+    });
+  }, [data]);
 
   const [config] = useState({
     viewPreset: {
@@ -41,6 +43,7 @@ function BryntumComponent({ data: propData }) {
     },
     // autoAdjustTimeAxis: false,
     projectLinesFeature: { showCurrentTimeline: true },
+    subGridConfigs: { locked: { width: '40%' } },
   })
 
   const [columns] = useState([
@@ -51,33 +54,45 @@ function BryntumComponent({ data: propData }) {
       autoHeight: true,
       width: 100,
       renderer: (args) => {
+        if (args.record.getData('start')) {
+          args.row.addCls('myRow');
+        }
         return <div>{args.value}</div>;
       },
       sortable: false,
       leafIconCls: null
     },
     {
-      field: 'custom',
-      text: 'Custom column',
-      width: 200,
-      renderer: (args) => {
-        // onclick or onClick? neither work
-        const html = `<div onclick="function handleClick() {
-          console.log('clicked');
-        }">${args.value}</div>`;
-        return { html };
-      } 
-    }
+      field: 'start',
+      id: 'start',
+      text: 'Start Date',
+      type: 'date',
+      width: 100,
+      renderer: ({ record }) => {
+        // console.log('start date: ', (args.record.toJSON() as any).name, {
+        //   value: args.value,
+        //   id: getProperty(args.record, 'id'),
+        //   start: getProperty(args.record, 'start')
+        // });
+  
+        const date = record.getData('startDate');
+  
+        if (!date) {
+          return '';
+        }
+  
+        return <DateDisplay date={date} />;
+      }
+    },
   ]);
 
-  // this doesn't work; 
-  useEffect(() => {
-    if (ganttRef.current) {
-      // console.log('setting timespan first', ganttRef.current.instance)
-      ganttRef.current.instance.setTimeSpan(new Date(2021,2, 25), new Date(2021,11, 3));
 
+  useEffect(() => {
+    if (ganttRef.current && tasksRef.current !== tasks) {
+      ganttRef.current.instance.taskStore.data = tasks;
+      tasksRef.current = tasks;
     }
-  }, [ganttRef.current?.instance])
+  }, [tasks]);
 
   // const tasks = useMemo(() => {
   //   return data;
@@ -86,7 +101,7 @@ function BryntumComponent({ data: propData }) {
   // console.log(ganttRef.current?.instance.timeAxis)
 
   return (
-      <div>
+      <div style={{ height: 500}}>
         <BryntumGantt 
           ref={ganttRef}
           getRowHeight={(args) => {
@@ -103,12 +118,21 @@ function BryntumComponent({ data: propData }) {
 }
 
 function App() {
-  const [data, setData] = useState([{ id: 1, name: 'task 1', custom: 'click me', startDate: new Date(2024, 0, 1), endDate: new Date(2024,11, 30)}]);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setData(Array.from({ length: 100 }, (_, i) => ({ id: i, name: `task ${i === 0 ? i : ''}`,  start: i === 0 ? new Date(2024, 0, 1) : '', due: i === 0 ? new Date(2024,11, 30) : ''})));
+    }
+
+    loadData();
+  }, [])
 
   return (
     <div>
       <BryntumComponent data={data} />
-      <button onClick={() => {
+      {/* <button onClick={() => {
           setData(prev => {
             const newData = [...prev];
 
@@ -120,7 +144,7 @@ function App() {
 
             return newData;
           });
-        }}>Toggle custom field value to {data[0].custom === null ? 'not null' : 'null'}</button>
+        }}>Toggle custom field value to {data[0].custom === null ? 'not null' : 'null'}</button> */}
     </div>
   );
 }
