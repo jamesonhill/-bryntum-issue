@@ -41,9 +41,22 @@ function BryntumComponent({ data }) {
         }
       ]
     },
-    // autoAdjustTimeAxis: false,
-    projectLinesFeature: { showCurrentTimeline: true },
     subGridConfigs: { locked: { width: '40%' } },
+    autoAdjustTimeAxis: false,
+    fixedRowHeight: false,
+    cellEditFeature: false,
+    cellMenuFeature: false,
+    columnReorderFeature: false,
+    taskMenuFeature: false,
+    taskEditFeature: false,
+    rowReorderFeature: false,
+    columnLines: false,
+    projectLinesFeature: false,
+    headerMenuFeature: false,
+    zoomOnTimeAxisDoubleClick: false,
+    zoomOnMouseWheel: false,
+    dependenciesFeature: { allowCreate: false },
+    sortFeature: false
   })
 
   const [columns] = useState([
@@ -56,11 +69,14 @@ function BryntumComponent({ data }) {
       renderer: (args) => {
         if (args.record.getData('start')) {
           args.row.addCls('myRow');
+        } else {
+          args.row.removeCls('myRow');
         }
         return <div>{args.value}</div>;
       },
       sortable: false,
-      leafIconCls: null
+      leafIconCls: null,
+      htmlEncode: false
     },
     {
       field: 'start',
@@ -68,20 +84,34 @@ function BryntumComponent({ data }) {
       text: 'Start Date',
       type: 'date',
       width: 100,
-      renderer: ({ record }) => {
-        // console.log('start date: ', (args.record.toJSON() as any).name, {
-        //   value: args.value,
-        //   id: getProperty(args.record, 'id'),
-        //   start: getProperty(args.record, 'start')
-        // });
+      htmlEncode: false,
+      renderer: ({ record, value }) => {
   
-        const date = record.getData('startDate');
+        // const date = record.getData('start');
   
-        if (!date) {
+        if (!value) {
           return '';
         }
   
-        return <DateDisplay date={date} />;
+        return <DateDisplay date={value} />;
+      }
+    },
+    {
+      field: 'due',
+      id: 'due',
+      text: 'Due Date',
+      type: 'date',
+      width: 100,
+      htmlEncode: false,
+      renderer: ({ record, value }) => {
+  
+        // const date = record.getData('start');
+  
+        if (!value) {
+          return '';
+        }
+  
+        return <DateDisplay date={value} />;
       }
     },
   ]);
@@ -94,20 +124,10 @@ function BryntumComponent({ data }) {
     }
   }, [tasks]);
 
-  // const tasks = useMemo(() => {
-  //   return data;
-  // }, [data]);
-
-  // console.log(ganttRef.current?.instance.timeAxis)
-
   return (
-      <div style={{ height: 500}}>
+      <div style={{ height: '100%', flex: 1, border: '1px solid black' }}>
         <BryntumGantt 
           ref={ganttRef}
-          getRowHeight={(args) => {
-          console.log('getRowHeight', args);
-          return 100;
-        }} 
           columns={columns}
           project={{ tasks: data }} 
           // projectLinesFeature={false}
@@ -129,22 +149,11 @@ function App() {
     loadData();
   }, [])
 
+  console.log('data', data);
+
   return (
-    <div>
+    <div style={{ height: '100%', display: 'flex', padding: 10}}>
       <BryntumComponent data={data} />
-      {/* <button onClick={() => {
-          setData(prev => {
-            const newData = [...prev];
-
-            if (newData[0].custom === null) {
-              newData[0].custom = 'my custom thing';
-            } else {
-              newData[0].custom = null;
-            }
-
-            return newData;
-          });
-        }}>Toggle custom field value to {data[0].custom === null ? 'not null' : 'null'}</button> */}
     </div>
   );
 }
